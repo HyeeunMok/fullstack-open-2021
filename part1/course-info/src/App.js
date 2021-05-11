@@ -4,10 +4,10 @@ const Header = (props) => {
   return <h1>{props.course}</h1>;
 };
 
-const Part = (props) => {
+const Part = ({ part, exercise }) => {
   return (
     <p>
-      {props.part} {props.exercise}
+      {part} {exercise}
     </p>
   );
 };
