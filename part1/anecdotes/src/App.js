@@ -1,5 +1,20 @@
 import React, { useState } from 'react';
 
+const DisplayTitle = ({ title }) => <h1>{title}</h1>;
+
+const DisplayContent = ({ anecdote, point }) => {
+  return (
+    <div>
+      <p>{anecdote}</p>
+      <p>has {point} votes</p>
+    </div>
+  );
+};
+
+const Button = (props) => (
+  <button onClick={props.handleClick}>{props.text}</button>
+);
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often',
@@ -11,8 +26,37 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0));
 
-  return <div>{anecdotes[selected]}</div>;
+  const getRandomAnecdoteIndex = () => {
+    const randomIndex = Math.floor(Math.random() * anecdotes.length);
+    setSelected(randomIndex);
+  };
+
+  const increaseVote = () => {
+    const copyPoints = [...points];
+    copyPoints[selected] += 1;
+    setPoints(copyPoints);
+  };
+
+  const findMostVotes = () => {
+    const mostVotesIndex = points.indexOf(Math.max(...points));
+    return mostVotesIndex;
+  };
+
+  return (
+    <div>
+      <DisplayTitle title="Anecdote of the day" />
+      <DisplayContent anecdote={anecdotes[selected]} point={points[selected]} />
+      <Button handleClick={increaseVote} text="vote" />
+      <Button handleClick={getRandomAnecdoteIndex} text="next anecdote" />
+      <DisplayTitle title="Anecdote with most votes" />
+      <DisplayContent
+        anecdote={anecdotes[findMostVotes()]}
+        point={points[findMostVotes()]}
+      />
+    </div>
+  );
 };
 
 export default App;
