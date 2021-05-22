@@ -4,56 +4,41 @@ const Header = () => <h1>Web development curriculum</h1>;
 
 const Title = ({ course }) => <h2>{course.name}</h2>;
 
+const Part = ({ parts }) => {
+  return parts.map(part => (
+    <p key={part.id}>
+      {part.name} {part.exercises}
+    </p>
+  ));
+};
+
+const Content = ({ course }) => {
+  return (
+    <div>
+      <Part parts={course.parts} />
+    </div>
+  );
+};
+
 const Total = ({ course }) => {
   const total = course.parts.reduce((acc, part) => {
     return acc + part.exercises;
   }, 0);
   return (
     <p>
-      <strong>total of exercises {total}</strong>
+      <strong>total of {total} exercises</strong>
     </p>
-  );
-};
-
-const Part = props => {
-  return (
-    <p>
-      {props.part.name} {props.part.exercises}
-    </p>
-  );
-};
-
-const Content1 = ({ course }) => {
-  return (
-    <div>
-      <Part part={course.parts[0]} />
-      <Part part={course.parts[1]} />
-      <Part part={course.parts[2]} />
-      <Part part={course.parts[3]} />
-    </div>
-  );
-};
-const Content2 = ({ course }) => {
-  return (
-    <div>
-      <Part part={course.parts[0]} />
-      <Part part={course.parts[1]} />
-    </div>
   );
 };
 
 const Course = ({ courses }) => {
-  return (
-    <div>
-      <Header />
-      <Title course={courses[0]} />
-      <Content1 course={courses[0]} />
-      <Total course={courses[0]} />
-      <Title course={courses[1]} />
-      <Content2 course={courses[1]} />
-      <Total course={courses[1]} />
+  return courses.map(course => (
+    <div key={course.id}>
+      <Title course={course} />
+      <Content course={course} />
+      <Total course={course} />
     </div>
-  );
+  ));
 };
 
 const App = () => {
@@ -102,7 +87,12 @@ const App = () => {
     },
   ];
 
-  return <Course courses={courses} />;
+  return (
+    <div>
+      <Header />
+      <Course courses={courses} />
+    </div>
+  );
 };
 
 export default App;
