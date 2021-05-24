@@ -1,28 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Person from './components/Person';
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 'Arto Hellas' },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 'Ada Lovelace' },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 'Dan Abramov' },
-    {
-      name: 'Mary Poppendieck',
-      number: '39-23-6423122',
-      id: 'Mary Poppendieck',
-    },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filter, setFilter] = useState('');
   const [filteredPersons, setFilteredPersons] = useState(persons);
 
-  const isNameExist = (newName) =>
-    persons.some((person) => person.name === newName) ? true : false;
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons').then(response => {
+      setPersons(response.data);
+    });
+  }, []);
 
-  const addPerson = (event) => {
+  const isNameExist = newName =>
+    persons.some(person => person.name === newName) ? true : false;
+
+  const addPerson = event => {
     event.preventDefault();
     const personObject = {
       name: newName,
@@ -36,19 +34,19 @@ const App = () => {
     setNewNumber('');
   };
 
-  const handleNameChange = (event) => {
+  const handleNameChange = event => {
     setNewName(event.target.value);
   };
 
-  const handleNumberChange = (event) => {
+  const handleNumberChange = event => {
     setNewNumber(event.target.value);
   };
 
-  const handleFilterChange = (event) => {
+  const handleFilterChange = event => {
     setFilter(event.target.value);
     setFilteredPersons(
       persons.filter(
-        (person) =>
+        person =>
           person.name
             .toLowerCase()
             .includes(event.target.value.toLowerCase()) || filter === ''
