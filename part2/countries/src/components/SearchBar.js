@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Search = ({ search, handleSearchChange }) => {
+const SearchBar = ({ search, handleSearch }) => {
   return (
     <div>
-      Find countries <input value={search} onChange={handleSearchChange} />
+      Find countries <input value={search} onChange={handleSearch} />
     </div>
   );
 };
 
-export default Search;
+export default SearchBar;
