@@ -3,7 +3,7 @@ import axios from 'axios';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Person from './components/Person';
-
+const baseUrl = 'http://localhost:3001/persons';
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
@@ -12,7 +12,7 @@ const App = () => {
   const [filteredPersons, setFilteredPersons] = useState(persons);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then(response => {
+    axios.get(baseUrl).then(response => {
       setPersons(response.data);
     });
   }, []);
@@ -25,11 +25,12 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: newName,
     };
     isNameExist(newName)
       ? alert(`${newName} is already added to phonebook`)
-      : setPersons(persons.concat(personObject));
+      : axios.post(baseUrl, personObject).then(response => {
+          setPersons(persons.concat(response.data));
+        });
     setNewName('');
     setNewNumber('');
   };
