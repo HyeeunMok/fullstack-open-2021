@@ -16,9 +16,15 @@ const deleteById = id => {
   return axios.delete(`${baseUrl}/${id}`);
 };
 
+const updatePerson = (id, newObject) => {
+  const personUrl = `${baseUrl}/${id}`;
+  return axios.put(personUrl, newObject).then(response => response.data);
+};
+
 const personService = {
   getAll,
   create,
   deleteById,
+  updatePerson,
 };
 export default personService;

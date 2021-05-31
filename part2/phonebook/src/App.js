@@ -17,20 +17,37 @@ const App = () => {
     });
   }, []);
 
-  const isNameExist = newName =>
-    persons.some(person => person.name === newName) ? true : false;
-
   const addPerson = event => {
     event.preventDefault();
     const personObject = {
       name: newName,
       number: newNumber,
     };
-    isNameExist(newName)
-      ? alert(`${newName} is already added to phonebook`)
-      : personService.create(personObject).then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson));
-        });
+    const existName = persons.find(
+      p => p.name.toLowerCase() === personObject.name.toLowerCase()
+    );
+
+    if (existName) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new number?`
+        )
+      ) {
+        personService
+          .updatePerson(existName.id, personObject)
+          .then(response =>
+            setPersons(
+              persons.map(person =>
+                person.id !== response.id ? person : response
+              )
+            )
+          );
+      }
+    } else {
+      personService
+        .create(personObject)
+        .then(response => setPersons(persons.concat(response)));
+    }
     setNewName('');
     setNewNumber('');
   };
