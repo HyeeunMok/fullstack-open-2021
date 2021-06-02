@@ -58,17 +58,41 @@ const generateId = () => {
   return randomId;
 };
 
+const isNameExist = name => {
+  if (persons.find(person => person.name === name)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 app.post('/api/persons', (request, response) => {
   const body = request.body;
 
-  const person = {
-    id: generateId(),
-    name: body.name,
-    number: body.number,
-  };
+  if (!body.name) {
+    return response.status(400).json({
+      error: 'name missing',
+    });
+  }
+  if (!body.number) {
+    return response.status(400).json({
+      error: 'number missing',
+    });
+  }
+  if (isNameExist(body.name)) {
+    return response.status(400).json({
+      error: 'name must be unique',
+    });
+  } else {
+    const person = {
+      id: generateId(),
+      name: body.name,
+      number: body.number,
+    };
 
-  persons = persons.concat(person);
-  response.json(person);
+    persons = persons.concat(person);
+    response.json(person);
+  }
 });
 
 const PORT = 3001;
