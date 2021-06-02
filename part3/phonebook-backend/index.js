@@ -26,8 +26,17 @@ let persons = [
   },
 ];
 
+const numOfPersons = persons.length;
+const currentDate = new Date();
+
 app.get('/api/persons', (request, response) => {
   response.json(persons);
+});
+
+app.get('/info', (request, response) => {
+  response.send(
+    `<p>Phonebook has info for ${numOfPersons} people</p> <p>${currentDate}</p>`
+  );
 });
 
 const PORT = 3001;
