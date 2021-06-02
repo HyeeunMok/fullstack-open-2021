@@ -1,4 +1,3 @@
-const { response } = require('express');
 const express = require('express');
 const app = express();
 
@@ -52,6 +51,24 @@ app.delete('/api/persons/:id', (request, response) => {
   persons = persons.filter(person => person.id !== id);
 
   response.status(204).end();
+});
+
+const generateId = () => {
+  const randomId = Math.floor(Math.random() * 100000000 + 1);
+  return randomId;
+};
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body;
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,
+  };
+
+  persons = persons.concat(person);
+  response.json(person);
 });
 
 const PORT = 3001;
