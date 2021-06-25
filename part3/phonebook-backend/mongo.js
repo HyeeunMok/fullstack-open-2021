@@ -18,17 +18,17 @@ mongoose.connect(url, {
   useCreateIndex: true,
 });
 
-const phonebookSchema = new mongoose.Schema({
+const personSchema = new mongoose.Schema({
   name: String,
   number: String,
 });
 
-const Phonebook = mongoose.model('Phonebook', phonebookSchema);
+const Person = mongoose.model('Person', personSchema);
 
 if (process.argv.length === 3) {
-  console.log('Phonebook:');
+  console.log('phonebook:');
 
-  Phonebook.find({}).then(results => {
+  Person.find({}).then(results => {
     results.forEach(result => {
       console.log(`${result.name} ${result.number}`);
     });
@@ -38,11 +38,11 @@ if (process.argv.length === 3) {
   const name = process.argv[3];
   const number = process.argv[4];
 
-  const phonebook = new Phonebook({
+  const person = new Person({
     name: name,
     number: number,
   });
-  phonebook.save().then(result => {
+  person.save().then(result => {
     console.log(`Added ${name} number ${number} to phonebook`);
     mongoose.connection.close();
   });
