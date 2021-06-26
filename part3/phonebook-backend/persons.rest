@@ -4,16 +4,26 @@ GET http://localhost:3001/api/persons
 GET http://localhost:3001/info
 
 ###
-GET http://localhost:3001/api/persons/60d51bfee386e58f145acd08
+GET http://localhost:3001/api/persons/2
 
 ###
-DELETE http://localhost:3001/api/persons/3
+DELETE http://localhost:3001/api/persons/60d62c1140d5abc322532e34
 
 ###
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Hyeeun Mok",
+  "name": "Sean Roy",
   "number": "555-555-5555"
 }
+
+###
+PUT http://localhost:3001/api/persons/60d66b9cf8c20fcbfca51ce6
+Content-Type: application/json
+
+{
+  "name": "Hyeeun Mok",
+  "number": "222-222-2222"
+}
+
