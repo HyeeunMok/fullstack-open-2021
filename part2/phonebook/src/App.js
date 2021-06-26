@@ -70,7 +70,10 @@ const App = () => {
         })
         .catch(error => {
           setWarning(true);
-          showNotification(`Failed to add a person. Error message: ${error}`);
+          showNotification(
+            `Failed to add a person. Error message: ${error.response.data.error}`
+          );
+          console.log(error.response.data);
         });
     }
     setNewName('');
