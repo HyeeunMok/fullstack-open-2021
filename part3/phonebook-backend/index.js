@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.static('build'));
 app.use(express.json());
 
-morgan.token('jsonBody', (req, res) => JSON.stringify(req.body));
+morgan.token('jsonBody', req => JSON.stringify(req.body));
 
 const logger = morgan(function (tokens, req, res) {
   return [
@@ -54,9 +54,9 @@ app.get('/api/persons/:id', (request, response, next) => {
   // });
 });
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end();
     })
     .catch(error => next(error));
@@ -82,13 +82,13 @@ const generateId = () => {
   return randomId;
 };
 
-const isNameExist = name => {
-  if (persons.find(person => person.name === name)) {
-    return true;
-  } else {
-    return false;
-  }
-};
+// const isNameExist = name => {
+//   if (persons.find(person => person.name === name)) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body;
