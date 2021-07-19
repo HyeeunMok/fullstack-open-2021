@@ -1,0 +1,23 @@
+GET http://localhost:3003/api/blogs
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Climate Change",
+  "author": "mok",
+  "url": "www.climate-change.com",
+  "likes": 30495
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Tennis is awesome",
+  "author": "mok",
+  "url": "www.tennis.com",
+  "likes": 50
+}
