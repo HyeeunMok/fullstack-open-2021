@@ -16,8 +16,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Tennis is awesome",
+  "title": "Minimalism",
   "author": "mok",
-  "url": "www.tennis.com",
+  "url": "www.minimalism.com",
   "likes": 50
 }
