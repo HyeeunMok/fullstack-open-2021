@@ -87,3 +87,20 @@ describe('total likes', () => {
     expect(result).toBe(36);
   });
 });
+
+describe('favorite blog', () => {
+  test('when list has no blog list, equals null', () => {
+    const result = listHelper.favoriteBlog(noBlogs);
+    expect(result).toEqual(null);
+  });
+
+  test('when list has only one blog, equals that blog', () => {
+    const result = listHelper.favoriteBlog(listWithOneBlog);
+    expect(result).toEqual(listWithOneBlog[0]);
+  });
+
+  test('when list has more than two blogs, the most liked blog of that', () => {
+    const result = listHelper.favoriteBlog(blogs);
+    expect(result).toEqual(blogs[2]);
+  });
+});
