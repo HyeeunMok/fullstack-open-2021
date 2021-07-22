@@ -1,3 +1,4 @@
+const { values } = require('lodash');
 const _ = require('lodash');
 const dummy = blogs => 1;
 
@@ -33,9 +34,20 @@ const mostBlogs = listOfBlogs => {
     .value();
 };
 
+const mostLikes = listOfBlogs => {
+  return _.chain(listOfBlogs)
+    .groupBy('author')
+    .mapValues(author => _.sumBy(author, 'likes'))
+    .entries() // _.entries() method is used to create an array of keyed-value pairs for the specified object.
+    .map(values => _.zipObject(['author', 'likes'], values))
+    .maxBy('likes')
+    .value();
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
