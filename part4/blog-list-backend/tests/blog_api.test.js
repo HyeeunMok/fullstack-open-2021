@@ -57,6 +57,40 @@ describe('POST /api/blogs', () => {
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
   });
+
+  // test('If the likes property is missing, it will default to the value 0', async () => {
+  //   const newBlog = {
+  //     title: 'New blog is added without likes',
+  //     author: 'John Doe',
+  //     url: 'https://testing.com',
+  //   };
+
+  //   await api
+  //     .post('/api/blogs')
+  //     .send(newBlog)
+  //     .expect(201)
+  //     .expect('Content-Type', /application\/json/);
+
+  //   const { body: blogs } = await api.get('/api/blogs');
+  //   expect(blogs[blogs.length - 1].likes).toEqual(0);
+  // });
+  test('If the likes property is missing, it will default to the value 0', async () => {
+    const newBlog = {
+      title: 'New blog is added without likes',
+      author: 'John Doe',
+      url: 'https://testing.com',
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    const likesOfAddedBlog = blogsAtEnd[blogsAtEnd.length - 1].likes;
+    expect(likesOfAddedBlog).toBe(0);
+  });
 });
 
 afterAll(() => {
