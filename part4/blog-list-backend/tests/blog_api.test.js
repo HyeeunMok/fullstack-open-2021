@@ -9,12 +9,9 @@ const api = supertest(app);
 beforeEach(async () => {
   await Blog.deleteMany({});
 
-  let blogObject = new Blog(helper.initialBlogs[0]);
-  await blogObject.save();
-  blogObject = new Blog(helper.initialBlogs[1]);
-  await blogObject.save();
-  blogObject = new Blog(helper.initialBlogs[2]);
-  await blogObject.save();
+  const blogs = helper.initialBlogs.map(blog => new Blog(blog));
+  const promiseArray = blogs.map(blog => blog.save());
+  await Promise.all(promiseArray);
 });
 
 describe('GET /api/blogs', () => {
@@ -39,6 +36,26 @@ describe('GET /api/blogs', () => {
   test('blogs should have a property named id', async () => {
     const response = await api.get('/api/blogs');
     expect(response.body[0].id).toBeDefined();
+  });
+});
+
+describe('POST /api/blogs', () => {
+  test('a valid blog can be added', async () => {
+    const newBlog = {
+      title: 'New blog is added',
+      author: 'Test Mok',
+      url: 'https://testingmok.com',
+      likes: 17,
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
   });
 });
 
