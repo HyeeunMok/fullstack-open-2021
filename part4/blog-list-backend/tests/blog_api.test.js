@@ -35,6 +35,11 @@ describe('GET /api/blogs', () => {
     const titles = response.body.map(r => r.title);
     expect(titles).toContain('Go To Statement Considered Harmful');
   });
+
+  test('blogs should have a property named id', async () => {
+    const response = await api.get('/api/blogs');
+    expect(response.body[0].id).toBeDefined();
+  });
 });
 
 afterAll(() => {
