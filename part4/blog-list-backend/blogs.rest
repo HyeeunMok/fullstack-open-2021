@@ -16,8 +16,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Minimalism",
+  "title": "beer",
   "author": "mok",
-  "url": "www.minimalism.com",
-  "likes": 50
+  "url": "www.beer.com",
+  "likes": 24
 }
