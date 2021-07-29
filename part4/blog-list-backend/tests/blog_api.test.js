@@ -97,9 +97,39 @@ describe('DELETE /api/blogs', () => {
     await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+    expect(blogsAtEnd).not.toContain(blogToDelete.id);
+  });
 
-    const titles = blogsAtEnd.map(r => r.title);
-    expect(titles).not.toContain(blogToDelete.title);
+  test('respond with 404 when trying to delete the blog using non-existing id', async () => {
+    const blogsAtStart = await helper.blogsInDb();
+    const noIdBlog = await helper.nonExistingId();
+    await api.delete(`/api/blogs/${noIdBlog}`).expect(404);
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(blogsAtStart.length);
+  });
+});
+
+describe('UPDATE /api/blogs', () => {
+  test('succeeds with status 200 if id is valid', async () => {
+    const newBlog = {
+      title: 'testing update api',
+      author: 'Test Doe',
+      url: 'https://www.updatedURL.net',
+      likes: 23,
+    };
+
+    const initialBlogs = await helper.blogsInDb();
+    const blogToUpdate = initialBlogs[0];
+    await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog).expect(200);
+
+    const blogsAtEnd = await helper.blogsInDb();
+
+    const updatedBlog = blogsAtEnd[0];
+
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+
+    expect(updatedBlog.likes).toBe(23);
+    expect(updatedBlog.author).toBe('Test Doe');
   });
 });
 

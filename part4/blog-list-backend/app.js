@@ -3,6 +3,7 @@ const app = express();
 require('express-async-errors');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const logger = require('./utils/logger');
 const config = require('./utils/config');
 const blogRouter = require('./controllers/blogs');
 const { errorHandler } = require('./utils/error');
@@ -16,8 +17,11 @@ mongoose
     useFindAndModify: false,
     useCreateIndex: true,
   })
+  // .then(() => {
+  //   console.log('connected to MongoDB');
+  // })
   .then(() => {
-    console.log('connected to MongoDB');
+    logger.info('connected to MongoDB');
   })
   .catch(error => {
     console.log('error connecting to MongoDB:', error.message);

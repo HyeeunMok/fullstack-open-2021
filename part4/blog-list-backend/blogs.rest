@@ -1,6 +1,9 @@
 GET http://localhost:3003/api/blogs
 
 ###
+GET http://localhost:3003/api/blogs/5a422a851b54a676234d17f7
+
+###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
@@ -24,3 +27,14 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3003/api/blogs/5a422aa71b54a676234d17f8
+
+###
+PUT http://localhost:3003/api/blogs/6101b91eb884336c95dc960f
+Content-Type: application/json
+
+{   
+  "title": "beer",
+  "author": "mok",
+  "url": "updatedUrl.com",
+  "likes": 54
+}
