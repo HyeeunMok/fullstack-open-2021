@@ -1,0 +1,12 @@
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "blogs": [],
+    "username": "doney",
+    "name": "John Doe",
+    "password": "skjeowek"
+}
+
+###
+Delete http://localhost:3003/api/users/61046bda52541d9b2a35aad2

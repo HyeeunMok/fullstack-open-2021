@@ -8,10 +8,22 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Climate Change",
-  "author": "mok",
-  "url": "www.climate-change.com",
-  "likes": 30495
+    "title": "YOU’RE DOING IT WRONG: 7 TIPS TO RECYCLE BETTER",
+    "author": "doney",
+    "url": "https://www.earthday.org/youre-doing-it-wrong-7-tips-to-recycle-better/",
+    "likes": 65,
+    "userId": "61046bda52541d9b2a35aad2"
+}
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Why Be a Vegetarian? Consider Your Health",
+  "author": "VEGETARIAN TIMES EDITORS",
+  "url": "https://www.vegetariantimes.com/health-nutrition/plant-based-diet/why-go-veg-learn-about-becoming-a-vegetarian/",
+  "likes": 34
 }
 
 ###
@@ -26,7 +38,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/5a422aa71b54a676234d17f8
+DELETE http://localhost:3003/api/blogs/61046c8a52541d9b2a35aad7
 
 ###
 PUT http://localhost:3003/api/blogs/6101b91eb884336c95dc960f
