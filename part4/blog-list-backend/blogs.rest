@@ -31,22 +31,24 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "beer",
-  "author": "mok",
-  "url": "www.beer.com",
-  "likes": 24
+  "title": "for checking",
+  "author": "Mike Arsenault",
+  "url": "https://winnipeg.ctvnews.ca",
+  "likes": 23,
+  "userId": "6112bce52fca023dc873c814"
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/61046c8a52541d9b2a35aad7
+DELETE http://localhost:3003/api/blogs/61030b8f9bd1371a38985517
 
 ###
-PUT http://localhost:3003/api/blogs/6101b91eb884336c95dc960f
+PUT http://localhost:3003/api/blogs/5a422a851b54a676234d17f7
 Content-Type: application/json
 
 {   
-  "title": "beer",
-  "author": "mok",
-  "url": "updatedUrl.com",
-  "likes": 54
+  "title": "Canonical string reduction",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+  "likes": 12,
+  "userId": "6112bcd02fca023dc873c810"
 }

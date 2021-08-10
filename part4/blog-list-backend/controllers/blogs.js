@@ -26,13 +26,17 @@ blogsRouter.post('/', async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
-    user: user._id,
+    user: user.id,
   });
   const savedBlog = await blog.save();
 
-  user.blogs = user.blogs.concat(savedBlog._id);
+  user.blogs = user.blogs.concat(savedBlog.id);
   await user.save();
-  response.status(201).json(savedBlog);
+
+  const populatedBlog = await savedBlog
+    .populate('user', { username: 1, name: 1 })
+    .execPopulate();
+  response.status(200).json(populatedBlog.toJSON());
 });
 
 // Delete a blog based on id

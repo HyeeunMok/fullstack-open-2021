@@ -58,6 +58,7 @@ describe('when there is initially one user in db', () => {
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toHaveLength(usersAtStart.length);
   });
+
   test('username is shorter than 3 characters', async () => {
     const usersAtStart = await helper.usersInDb();
 
