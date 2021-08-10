@@ -43,9 +43,10 @@ describe('POST /api/blogs', () => {
   test('a valid blog can be added', async () => {
     const newBlog = {
       title: 'New blog is added',
-      author: 'Test Mok',
+      author: 'Jone Doe',
       url: 'https://testingmok.com',
       likes: 17,
+      userId: '6111898a24277a216c84ad01',
     };
 
     await api
@@ -63,6 +64,7 @@ describe('POST /api/blogs', () => {
       title: 'New blog is added without likes',
       author: 'John Doe',
       url: 'https://testing.com',
+      userId: '6111898a24277a216c84ad01',
     };
 
     await api
@@ -80,10 +82,18 @@ describe('POST /api/blogs', () => {
     const newBlog = {
       author: 'Jone Doe',
       likes: 12,
+      userId: '6111898a24277a216c84ad01',
     };
 
     await api.post('/api/blogs').send(newBlog).expect(400);
 
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+  });
+
+  test('if content is missing, respond with 400 bad request', async () => {
+    const newBlog = { userId: '6111898a24277a216c84ad01' };
+    await api.post('/api/blogs').send(newBlog).expect(400);
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
   });
