@@ -1,4 +1,7 @@
+const logger = require('./logger');
+
 const errorHandler = (error, request, response, next) => {
+  logger.error(error.message);
   if (error.name === 'CastError' && error.message.includes('ObjectId')) {
     return response.status(400).send({ error: 'malformatted id' });
   } else if (error.name === 'ValidationError') {
