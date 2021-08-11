@@ -6,13 +6,13 @@ GET http://localhost:3003/api/blogs/5a422a851b54a676234d17f7
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2UiLCJpZCI6IjYxMTJiY2U1MmZjYTAyM2RjODczYzgxNCIsImlhdCI6MTYyODY5OTYwNSwiZXhwIjoxNjI4NzAzMjA1fQ.JqNSFOjtialULtlY2iyt0YRO_UtUq5wUpsKmz3Gz05s
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2UiLCJpZCI6IjYxMTJiY2U1MmZjYTAyM2RjODczYzgxNCIsImlhdCI6MTYyODcwNTAzMywiZXhwIjoxNjI4NzA4NjMzfQ.Tlr25HDPrYlFkjJKjelLtXfFWiRT1wj1VrhaHhoiQNY
 
 {
-    "title": "Testing for 4.20",
+    "title": "Testing for 4.22",
     "author": "Mike Arsenault",
     "url": "https://www.earthday.org",
-    "likes": 111,
+    "likes": 222,
     "userId": "6112bce52fca023dc873c814"
 }
 
@@ -40,8 +40,8 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/6113fbeb003c2109c3aaa76a
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2UiLCJpZCI6IjYxMTJiY2U1MmZjYTAyM2RjODczYzgxNCIsImlhdCI6MTYyODcwMjM0OCwiZXhwIjoxNjI4NzA1OTQ4fQ.zay_qA6KeioFQEEUGBTuJTUVHeyLrLaH_i6P-iaLUcM
+DELETE http://localhost:3003/api/blogs/611411ae0b7a6015b2be4f45
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2UiLCJpZCI6IjYxMTJiY2U1MmZjYTAyM2RjODczYzgxNCIsImlhdCI6MTYyODcwNTAzMywiZXhwIjoxNjI4NzA4NjMzfQ.Tlr25HDPrYlFkjJKjelLtXfFWiRT1wj1VrhaHhoiQNY
 
 ###
 PUT http://localhost:3003/api/blogs/5a422a851b54a676234d17f7

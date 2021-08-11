@@ -1,4 +1,6 @@
 const morgan = require('morgan');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 
 // MORGAN
 morgan.token('data', request => {
@@ -29,8 +31,27 @@ const tokenExtractor = (request, response, next) => {
   next();
 };
 
+// USER EXTRACTOR
+const userExtractor = async (request, response, next) => {
+  const authorization = request.get('authorization');
+
+  const decodedToken = jwt.verify(
+    authorization.substring(7),
+    process.env.SECRET
+  );
+
+  const user = await User.findById(decodedToken.id);
+
+  authorization && authorization.toLowerCase().startsWith('bearer ')
+    ? (request.user = user)
+    : (request.user = null);
+
+  next();
+};
+
 module.exports = {
   morganLogger,
   unknownEndpoint,
   tokenExtractor,
+  userExtractor,
 };
