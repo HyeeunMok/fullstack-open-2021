@@ -6,10 +6,10 @@ GET http://localhost:3003/api/blogs/5a422a851b54a676234d17f7
 ###
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2UiLCJpZCI6IjYxMTJiY2U1MmZjYTAyM2RjODczYzgxNCIsImlhdCI6MTYyODY0MjQzMX0._mDDsJrzCifG3Ird1iFiArw6PWrwm_aQIh_CsBYINBE
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pa2UiLCJpZCI6IjYxMTJiY2U1MmZjYTAyM2RjODczYzgxNCIsImlhdCI6MTYyODY1MDIyOCwiZXhwIjoxNjI4NjUzODI4fQ.M5-Ex9V4ZL6UxCpz13W6U0sTYaw2tZx3EsrQfuzVoao
 
 {
-    "title": "Second testing for Token",
+    "title": "Testing for 4.19",
     "author": "Mike Arsenault",
     "url": "https://www.earthday.org",
     "likes": 111,
@@ -40,7 +40,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/61030b8f9bd1371a38985517
+DELETE http://localhost:3003/api/blogs/61133b09f5472bf2a71ced9b
 
 ###
 PUT http://localhost:3003/api/blogs/5a422a851b54a676234d17f7
