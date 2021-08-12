@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
+const jwt = require('jsonwebtoken');
+const bycrypt = require('bcrypt');
 const app = require('../app');
 const helper = require('./test_helper');
 const Blog = require('../models/blog');
-
+const User = require('../models/user');
 const api = supertest(app);
 
 beforeEach(async () => {
@@ -39,10 +41,26 @@ describe('GET /api/blogs', () => {
   });
 });
 
+// POST
 describe('POST /api/blogs', () => {
+  let token;
+
+  beforeAll(async () => {
+    await User.deleteMany({});
+
+    const newUser = await new User({
+      username: 'New Tester',
+      passwordHash: await bycrypt.hash('dskafjlevd', 10),
+    }).save();
+
+    const userForToken = { username: 'New Tester', id: newUser.id };
+    token = jwt.sign(userForToken, process.env.SECRET);
+    return token;
+  });
+
   test('a valid blog can be added', async () => {
     const newBlog = {
-      title: 'New blog is added',
+      title: 'New blog is added. test for 4.23',
       author: 'Jone Doe',
       url: 'https://testingmok.com',
       likes: 17,
@@ -51,8 +69,9 @@ describe('POST /api/blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
-      .expect(201)
+      .expect(200)
       .expect('Content-Type', /application\/json/);
 
     const blogsAtEnd = await helper.blogsInDb();
@@ -69,8 +88,9 @@ describe('POST /api/blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
-      .expect(201)
+      .expect(200)
       .expect('Content-Type', /application\/json/);
 
     const blogsAtEnd = await helper.blogsInDb();
@@ -85,7 +105,11 @@ describe('POST /api/blogs', () => {
       userId: '6111898a24277a216c84ad01',
     };
 
-    await api.post('/api/blogs').send(newBlog).expect(400);
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+      .expect(400);
 
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
@@ -93,20 +117,58 @@ describe('POST /api/blogs', () => {
 
   test('if content is missing, respond with 400 bad request', async () => {
     const newBlog = { userId: '6111898a24277a216c84ad01' };
-    await api.post('/api/blogs').send(newBlog).expect(400);
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+      .expect(400);
     const blogsAtEnd = await helper.blogsInDb();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
   });
 });
 
+// DELETE
 describe('DELETE /api/blogs', () => {
+  let token;
+
+  beforeEach(async () => {
+    await Blog.deleteMany({});
+    await User.deleteMany({});
+
+    const newUser = await new User({
+      username: 'New Tester',
+      passwordHash: await bycrypt.hash('dskafjlevd', 10),
+    }).save();
+
+    const userForToken = { username: 'New Tester', id: newUser.id };
+    token = jwt.sign(userForToken, process.env.SECRET);
+
+    const newBlog = {
+      title: 'ex. 4.23 testing',
+      author: 'Test User',
+      url: 'https://testing.com',
+    };
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+      .expect(200);
+
+    return token;
+  });
+
   test('succeeds with status code 204 if id is valid', async () => {
     const blogsAtStart = await helper.blogsInDb();
     const blogToDelete = blogsAtStart[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(204);
     const blogsAtEnd = await helper.blogsInDb();
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+    // expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+    expect(blogsAtEnd).toHaveLength(0);
     expect(blogsAtEnd).not.toContain(blogToDelete.id);
   });
 
@@ -119,27 +181,64 @@ describe('DELETE /api/blogs', () => {
   });
 });
 
+// UPDATE
 describe('UPDATE /api/blogs', () => {
+  let token;
+
+  beforeEach(async () => {
+    await Blog.deleteMany({});
+    await User.deleteMany({});
+
+    const newUser = await new User({
+      username: 'Update Tester',
+      passwordHash: await bycrypt.hash('dskafjlevd', 10),
+    }).save();
+
+    const userForToken = { username: 'Update Tester', id: newUser.id };
+    token = jwt.sign(userForToken, process.env.SECRET);
+    await api.post('/api/users').send(newUser);
+
+    return token;
+  });
+
   test('succeeds with status 200 if id is valid', async () => {
     const newBlog = {
       title: 'testing update api',
-      author: 'Test Doe',
+      author: 'Update Tester',
       url: 'https://www.updatedURL.net',
       likes: 23,
     };
 
-    const initialBlogs = await helper.blogsInDb();
-    const blogToUpdate = initialBlogs[0];
-    await api.put(`/api/blogs/${blogToUpdate.id}`).send(newBlog).expect(200);
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200);
+
+    // const initialBlogs = await helper.blogsInDb();
+    const allBlogs = await helper.blogsInDb();
+    const blogToUpdate = allBlogs.find(blog => blog.title === newBlog.title);
+    // const updatedBlog = blogsAtEnd[0];
+
+    const updatedBlog = {
+      ...blogToUpdate,
+      likes: blogToUpdate.likes + 1,
+    };
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/);
 
     const blogsAtEnd = await helper.blogsInDb();
 
-    const updatedBlog = blogsAtEnd[0];
+    // expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
 
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+    const testBlog = blogsAtEnd.find(blog => blog.likes === 24);
 
-    expect(updatedBlog.likes).toBe(23);
-    expect(updatedBlog.author).toBe('Test Doe');
+    expect(testBlog.likes).toBe(24);
+    expect(testBlog.author).toBe('Update Tester');
   });
 });
 
