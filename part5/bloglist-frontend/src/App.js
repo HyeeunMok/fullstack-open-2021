@@ -4,12 +4,15 @@ import loginService from './services/login';
 import LoginForm from './components/LoginForm';
 import BlogList from './components/BlogList';
 import BlogForm from './components/BlogForm';
+import Notification from './components/Notification';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const [warning, setWarning] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs));
@@ -34,8 +37,11 @@ const App = () => {
       setUser(user);
       setUsername('');
       setPassword('');
-    } catch (exception) {
-      console.log('wrong credentials', exception);
+      showNotification(`${user.username} successfully logged in`);
+    } catch (error) {
+      console.log('wrong credentials', error);
+      setWarning(true);
+      showNotification('Wrong username or password');
     }
   };
 
@@ -51,19 +57,36 @@ const App = () => {
     event.preventDefault();
     setUser(null);
     window.localStorage.removeItem('loggedBlogUser');
+    showNotification('Logged out');
   };
 
   const createBlog = async newBlogObject => {
     try {
       const newBlog = await blogService.create(newBlogObject);
       setBlogs(blogs.concat(newBlog));
+      showNotification(
+        `A new blog ${newBlog.title} by ${newBlog.author} added.`
+      );
     } catch (error) {
       console.log(error);
+      setWarning(true);
+      showNotification(`${error.response.data.message}`);
     }
+  };
+
+  const showNotification = message => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+      setWarning(false);
+    }, 3000);
   };
 
   return (
     <div>
+      {notification && (
+        <Notification message={notification} warning={warning} />
+      )}
       {user === null ? (
         <LoginForm
           handleLogin={handleLogin}
