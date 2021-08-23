@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import LoginForm from './components/LoginForm';
 import BlogList from './components/BlogList';
 import BlogForm from './components/BlogForm';
+import Togglable from './components/Togglable';
 import Notification from './components/Notification';
 
 const App = () => {
@@ -13,6 +14,8 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
   const [warning, setWarning] = useState(false);
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs));
@@ -62,6 +65,7 @@ const App = () => {
 
   const createBlog = async newBlogObject => {
     try {
+      blogFormRef.current.toggleVisibility();
       const newBlog = await blogService.create(newBlogObject);
       setBlogs(blogs.concat(newBlog));
       showNotification(
@@ -96,14 +100,16 @@ const App = () => {
           handlePasswordChange={handlePasswordChange}
         />
       ) : (
-        <div>
+        <Fragment>
           <h2>Blogs</h2>
           <p>
             {user.name} logged in <button onClick={handleLogout}>Logout</button>
           </p>
-          <BlogForm createBlog={createBlog} />
+          <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
+            <BlogForm createBlog={createBlog} />
+          </Togglable>
           <BlogList blogs={blogs} />
-        </div>
+        </Fragment>
       )}
     </div>
   );
