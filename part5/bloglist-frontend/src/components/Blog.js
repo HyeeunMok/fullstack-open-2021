@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Blog.module.css';
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
   const toggleShow = () => {
     setShowDetails(!showDetails);
@@ -10,6 +10,11 @@ const Blog = ({ blog, updateBlog }) => {
   const likeHandler = () => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 };
     updateBlog(blog.id, updatedBlog);
+  };
+
+  const removeHandler = () => {
+    window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
+    removeBlog(blog.id);
   };
 
   return (
@@ -26,6 +31,7 @@ const Blog = ({ blog, updateBlog }) => {
             <br />
             {blog.user.name}
           </p>
+          <button onClick={removeHandler}>Remove</button>
         </>
       )}
     </div>

@@ -19,7 +19,11 @@ const App = () => {
   const blogFormRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then(blogs => setBlogs(blogs));
+    const fetchData = async () => {
+      const initialBlogs = await blogService.getAll();
+      setBlogs(initialBlogs);
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -104,6 +108,11 @@ const App = () => {
     );
   };
 
+  const removeBlog = async blogId => {
+    await blogService.remove(blogId);
+    setBlogs(blogs.filter(blog => blog.id !== blogId));
+  };
+
   return (
     <div>
       {notification && (
@@ -126,7 +135,11 @@ const App = () => {
           <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Togglable>
-          <BlogList blogs={blogs} updateBlog={updateBlog} />
+          <BlogList
+            blogs={blogs}
+            updateBlog={updateBlog}
+            removeBlog={removeBlog}
+          />
         </Fragment>
       )}
     </div>
