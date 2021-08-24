@@ -22,7 +22,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
       {blog.title} by {blog.author}
       <button onClick={toggleShow}>{showDetails ? 'Hide' : 'View'}</button>
       {showDetails && (
-        <>
+        <div className="blogDetails">
           <p>
             {blog.url}
             <br />
@@ -32,7 +32,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
             {blog.user.name}
           </p>
           <button onClick={removeHandler}>Remove</button>
-        </>
+        </div>
       )}
     </div>
   );
