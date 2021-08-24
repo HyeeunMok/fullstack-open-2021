@@ -14,6 +14,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
   const [warning, setWarning] = useState(false);
+  const [updatedBlogs, setUpdatedBlogs] = useState(false);
 
   const blogFormRef = useRef();
 
@@ -29,6 +30,15 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
+
+  useEffect(() => {
+    updatedBlogs &&
+      blogService.getAll().then(blogs => {
+        setBlogs(blogs);
+        console.log('Blog is just updated.');
+      });
+    setUpdatedBlogs(false);
+  }, [updatedBlogs]);
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -86,6 +96,14 @@ const App = () => {
     }, 3000);
   };
 
+  const updateBlog = async (blogId, blogObject) => {
+    await blogService.update(blogId, blogObject);
+    const updatedBlog = { ...blogObject, blogId };
+    setBlogs(
+      blogs.map(blog => (blog.id === updatedBlog.id ? updatedBlog : blog))
+    );
+  };
+
   return (
     <div>
       {notification && (
@@ -108,7 +126,7 @@ const App = () => {
           <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
           </Togglable>
-          <BlogList blogs={blogs} />
+          <BlogList blogs={blogs} updateBlog={updateBlog} />
         </Fragment>
       )}
     </div>

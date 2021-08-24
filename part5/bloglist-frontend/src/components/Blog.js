@@ -1,23 +1,28 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import styles from './Blog.module.css';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [showDetails, setShowDetails] = useState(false);
   const toggleShow = () => {
     setShowDetails(!showDetails);
   };
 
+  const likeHandler = () => {
+    const updatedBlog = { ...blog, likes: blog.likes + 1 };
+    updateBlog(blog.id, updatedBlog);
+  };
+
   return (
     <div className={styles.blogStyle}>
       {blog.title} by {blog.author}
-      <button onClick={toggleShow}>{showDetails ? 'Hide' : 'Show'}</button>
+      <button onClick={toggleShow}>{showDetails ? 'Hide' : 'View'}</button>
       {showDetails && (
         <>
           <p>
             {blog.url}
             <br />
             likes: {blog.likes}
-            <button>likes</button>
+            <button onClick={likeHandler}>Like</button>
             <br />
             {blog.user.name}
           </p>
