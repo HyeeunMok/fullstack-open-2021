@@ -16,8 +16,10 @@ describe('Blog component', () => {
   };
 
   let component;
+  const likeMockHandler = jest.fn();
+
   beforeEach(() => {
-    component = render(<Blog blog={blog} />);
+    component = render(<Blog blog={blog} updateBlog={likeMockHandler} />);
   });
 
   test('renders blogs with only title and author', () => {
@@ -35,5 +37,16 @@ describe('Blog component', () => {
     expect(blogDetails).toBeVisible();
     expect(blogDetails).toHaveTextContent(blog.likes);
     expect(blogDetails).toHaveTextContent(blog.url);
+  });
+
+  test('Like button is clicked twice, then event handler is called twice', () => {
+    const viewButton = component.getByText('View');
+    fireEvent.click(viewButton);
+
+    const likeButton = component.getByText('Like');
+    fireEvent.click(likeButton);
+    fireEvent.click(likeButton);
+
+    expect(likeMockHandler.mock.calls).toHaveLength(2);
   });
 });
