@@ -51,5 +51,25 @@ describe('Blog app', function () {
         'Testing for creating a blog by Test Doe'
       );
     });
+
+    describe('and a blog exists', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Testing for clicking a like button',
+          author: 'Test Doe',
+          url: 'http://www.test.ca',
+          likes: 0,
+        });
+      });
+
+      it('The blog can be liked', function () {
+        cy.contains('Testing for clicking a like button');
+        cy.get('[data-cy=view-button]').click();
+        cy.get('[data-cy=like-button]').click();
+        cy.get('.blogDetails').contains('likes: 1');
+        cy.get('[data-cy=like-button]').click();
+        cy.get('.blogDetails').contains('likes: 2');
+      });
+    });
   });
 });

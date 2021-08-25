@@ -20,14 +20,18 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
   return (
     <div className={styles.blogStyle}>
       {blog.title} by {blog.author}
-      <button onClick={toggleShow}>{showDetails ? 'Hide' : 'View'}</button>
+      <button data-cy="view-button" onClick={toggleShow}>
+        {showDetails ? 'Hide' : 'View'}
+      </button>
       {showDetails && (
         <div className="blogDetails">
           <p>
             {blog.url}
             <br />
             likes: {blog.likes}
-            <button onClick={likeHandler}>Like</button>
+            <button data-cy="like-button" onClick={likeHandler}>
+              Like
+            </button>
             <br />
             {blog.user.name}
           </p>
