@@ -30,6 +30,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           Title{': '}
           <input
+            data-cy="title"
             id="title"
             type="text"
             value={title}
@@ -40,6 +41,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           Author{': '}
           <input
+            data-cy="author"
             id="author"
             type="text"
             value={author}
@@ -50,6 +52,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           Url{': '}
           <input
+            data-cy="url"
             id="url"
             type="text"
             value={url}
@@ -57,7 +60,9 @@ const BlogForm = ({ createBlog }) => {
             onChange={handleUrlChange}
           />
         </div>
-        <button type="submit">Create</button>
+        <button data-cy="blog-submit-button" type="submit">
+          Create
+        </button>
       </form>
     </div>
   );

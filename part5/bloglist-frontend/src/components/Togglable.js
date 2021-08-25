@@ -19,7 +19,9 @@ const Togglable = React.forwardRef(({ buttonLabel, children }, ref) => {
   return (
     <Fragment>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{buttonLabel}</button>
+        <button data-cy="create-button" onClick={toggleVisibility}>
+          {buttonLabel}
+        </button>
       </div>
       <div style={showWhenVisible}>
         {children}
