@@ -35,7 +35,9 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
             <br />
             {blog.user.name}
           </p>
-          <button onClick={removeHandler}>Remove</button>
+          <button data-cy="delete-button" onClick={removeHandler}>
+            Remove
+          </button>
         </div>
       )}
     </div>

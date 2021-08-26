@@ -71,5 +71,26 @@ describe('Blog app', function () {
         cy.get('.blogDetails').contains('likes: 2');
       });
     });
+
+    describe('A blog can be created', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Testing for clicking a delete button',
+          author: 'Test Doe',
+          url: 'http://www.test.ca',
+          likes: 0,
+        });
+      });
+
+      it('and deleted by author', function () {
+        cy.contains('Testing for clicking a delete button');
+        cy.get('[data-cy=view-button]').click();
+        cy.get('[data-cy=delete-button]').click();
+        cy.get('html').should(
+          'not.contain',
+          'Testing for clicking a delete button'
+        );
+      });
+    });
   });
 });
