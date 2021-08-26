@@ -92,5 +92,38 @@ describe('Blog app', function () {
         );
       });
     });
+
+    describe('Multiple blogs can be created', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Blog 1',
+          author: 'Test Doe',
+          url: 'http://www.test.ca',
+          likes: 3,
+        });
+        cy.createBlog({
+          title: 'Blog 2',
+          author: 'Test Doe',
+          url: 'http://www.test.ca',
+          likes: 23,
+        });
+        cy.createBlog({
+          title: 'Blog 3',
+          author: 'Test Doe',
+          url: 'http://www.test.ca',
+          likes: 1,
+        });
+      });
+
+      it('and the blogs are ordered according to likes with the blog with the most likes being first', function () {
+        cy.contains('Blog 2 by Test Doe');
+        cy.get('[data-cy=view-button]').click({ multiple: true });
+        cy.get('[data-cy=likes]').then(likes => {
+          expect(likes[0]).contain(23);
+          expect(likes[1]).contain(3);
+          expect(likes[2]).contain(1);
+        });
+      });
+    });
   });
 });

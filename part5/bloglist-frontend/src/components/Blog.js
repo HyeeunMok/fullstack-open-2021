@@ -28,7 +28,7 @@ const Blog = ({ blog, updateBlog, removeBlog }) => {
           <p>
             {blog.url}
             <br />
-            likes: {blog.likes}
+            <span data-cy="likes">likes: {blog.likes}</span>
             <button data-cy="like-button" onClick={likeHandler}>
               Like
             </button>
