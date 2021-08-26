@@ -7,6 +7,12 @@ describe('Blog app', function () {
       password: 'dkfjake',
     };
     cy.request('POST', 'http://localhost:3003/api/users/', user);
+    const secondUser = {
+      name: 'Ryan Kim',
+      username: 'ryan',
+      password: 'fadfe',
+    };
+    cy.request('POST', 'http://localhost:3003/api/users/', secondUser);
     cy.visit('http://localhost:3000');
   });
   it('Login form is shown', function () {
@@ -123,6 +129,30 @@ describe('Blog app', function () {
           expect(likes[1]).contain(3);
           expect(likes[2]).contain(1);
         });
+      });
+    });
+
+    describe('When another user is logged in', function () {
+      beforeEach(function () {
+        cy.login({ username: 'tester', password: 'dkfjake' });
+        cy.createBlog({
+          title: 'New blog',
+          author: 'Test Doe',
+          url: 'http://www.test.ca',
+          likes: 3,
+        });
+      });
+
+      it('and user can not delete the blog which is posted by another user', function () {
+        cy.contains('New blog by Test Doe');
+        cy.get('[data-cy=view-button]').click();
+        cy.contains('Remove');
+        cy.get('[data-cy=logout-button]').click();
+        cy.login({ username: 'ryan', password: 'fadfe' });
+        cy.get('[data-cy=view-button]').click();
+        cy.contains('New blog by Test Doe');
+        cy.get('[data-cy=delete-button]').click();
+        cy.get('html').should('contain', 'New blog by Test Doe');
       });
     });
   });

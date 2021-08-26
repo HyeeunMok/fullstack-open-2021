@@ -130,7 +130,10 @@ const App = () => {
         <Fragment>
           <h2>Blogs</h2>
           <p>
-            {user.name} logged in <button onClick={handleLogout}>Logout</button>
+            {user.name} logged in{' '}
+            <button data-cy="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
           </p>
           <Togglable buttonLabel="Create new blog" ref={blogFormRef}>
             <BlogForm createBlog={createBlog} />
