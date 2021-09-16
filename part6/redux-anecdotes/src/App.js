@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getId } from './reducers/anecdoteReducer';
+import { createAnecdote, incrementVote } from './reducers/anecdoteReducer';
 
 const App = () => {
   const anecdotes = useSelector(state => state);
@@ -10,21 +10,14 @@ const App = () => {
   dispatch({ type: 'SORT_BY_VOTE' });
 
   const vote = id => {
-    dispatch({ type: 'INCREMENT_VOTE', data: { id } });
+    dispatch(incrementVote(id));
   };
 
   const AddAnecdote = event => {
     event.preventDefault();
     const anecdote = event.target.anecdote.value;
     event.target.anecdote.value = '';
-    dispatch({
-      type: 'NEW_ANECDOTE',
-      data: {
-        content: anecdote,
-        id: getId(),
-        votes: 0,
-      },
-    });
+    dispatch(createAnecdote(anecdote));
   };
 
   return (
