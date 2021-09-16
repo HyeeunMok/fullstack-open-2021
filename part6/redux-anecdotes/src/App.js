@@ -7,6 +7,8 @@ const App = () => {
   const anecdotes = useSelector(state => state);
   const dispatch = useDispatch();
 
+  dispatch({ type: 'SORT_BY_VOTE' });
+
   const vote = id => {
     dispatch({ type: 'INCREMENT_VOTE', data: { id } });
   };

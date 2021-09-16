@@ -35,8 +35,10 @@ const reducer = (state = initialState, action) => {
       );
     case 'NEW_ANECDOTE':
       return state.concat(action.data);
+    case 'SORT_BY_VOTE':
+      return state.sort((a, b) => b.votes - a.votes);
     default:
-      return state;
+      return state.sort((a, b) => b.votes - a.votes);
   }
 };
 
