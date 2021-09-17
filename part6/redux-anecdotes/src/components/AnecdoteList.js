@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { incrementVote } from '../reducers/anecdoteReducer';
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => state);
+  const anecdotes = useSelector(state => state.anecdotes);
   const dispatch = useDispatch();
 
   dispatch({ type: 'SORT_BY_VOTE' });
