@@ -8,10 +8,16 @@ import {
 } from '../reducers/notificationReducer';
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => state.anecdotes);
-  const dispatch = useDispatch();
+  const anecdotes = useSelector(state => {
+    if (state.filter === null) return state.anecdotes;
+    return state.anecdotes
+      .filter(anecdote =>
+        anecdote.content.toLowerCase().includes(state.filter.toLowerCase())
+      )
+      .sort((a, b) => b.votes - a.votes);
+  });
 
-  dispatch({ type: 'SORT_BY_VOTE' });
+  const dispatch = useDispatch();
 
   const vote = id => {
     dispatch(incrementVote(id));
