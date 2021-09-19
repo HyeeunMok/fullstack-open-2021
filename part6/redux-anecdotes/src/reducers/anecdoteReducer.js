@@ -49,7 +49,7 @@ const anecdoteReducer = (state = initialState, action) => {
         anecdote.id === id ? updatedAnecdote : anecdote
       );
     case 'NEW_ANECDOTE':
-      return state.concat(action.data);
+      return [...state, action.data];
     default:
       return state.sort((a, b) => b.votes - a.votes);
   }
