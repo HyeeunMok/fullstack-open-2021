@@ -8,11 +8,11 @@ import {
 } from '../reducers/notificationReducer';
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => {
-    if (state.filter === null) return state.anecdotes;
-    return state.anecdotes
+  const anecdotes = useSelector(({ filter, anecdotes }) => {
+    if (filter === null) return anecdotes;
+    return anecdotes
       .filter(anecdote =>
-        anecdote.content.toLowerCase().includes(state.filter.toLowerCase())
+        anecdote.content.toLowerCase().includes(filter.toLowerCase())
       )
       .sort((a, b) => b.votes - a.votes);
   });
