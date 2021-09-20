@@ -27,19 +27,16 @@ export const initializeAnecdotes = anecdotes => {
     data: anecdotes,
   };
 };
-export const createAnecdote = anecdote => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data: {
-      content: anecdote,
-      // id: getId(),
-      votes: 0,
-    },
-  };
-};
 
 export const incrementVote = id => {
   return { type: 'INCREMENT_VOTE', data: { id } };
+};
+
+export const createAnecdote = data => {
+  return {
+    type: 'NEW_ANECDOTE',
+    data,
+  };
 };
 
 export default anecdoteReducer;
