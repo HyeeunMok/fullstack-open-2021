@@ -32,7 +32,7 @@ export const incrementVote = id => {
   return { type: 'INCREMENT_VOTE', data: { id } };
 };
 
-const initialState = anecdotesAtStart.map(asObject);
+export const initialState = anecdotesAtStart.map(asObject);
 
 const anecdoteReducer = (state = initialState, action) => {
   console.log('state now: ', state);

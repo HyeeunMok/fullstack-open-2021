@@ -3,7 +3,7 @@ export const filterKeywords = filterKeywords => ({
   data: filterKeywords,
 });
 
-const filterReducer = (state = null, action) => {
+const filterReducer = (state = '', action) => {
   switch (action.type) {
     case 'FILTER':
       return action.data;

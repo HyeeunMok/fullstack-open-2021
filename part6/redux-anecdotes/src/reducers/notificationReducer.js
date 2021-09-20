@@ -7,12 +7,12 @@ export const hideNotification = () => ({
   type: 'HIDE',
 });
 
-const notificationReducer = (state = null, action) => {
+const notificationReducer = (state = '', action) => {
   switch (action.type) {
     case 'SHOW':
       return action.data;
     case 'HIDE':
-      return null;
+      return '';
     default:
       return state;
   }
