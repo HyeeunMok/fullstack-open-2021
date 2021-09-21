@@ -33,8 +33,20 @@ export const initializeAnecdotes = () => {
   };
 };
 
-export const incrementVote = id => {
-  return { type: 'INCREMENT_VOTE', data: { id } };
+export const incrementVote = votedAnecdote => {
+  return async dispatch => {
+    const anecdote = {
+      ...votedAnecdote,
+      votes: votedAnecdote.votes + 1,
+    };
+
+    const updatedAnecdote = await anecdoteService.update(anecdote);
+    const { id } = updatedAnecdote;
+    dispatch({
+      type: 'INCREMENT_VOTE',
+      data: { id },
+    });
+  };
 };
 
 export const createAnecdote = content => {
