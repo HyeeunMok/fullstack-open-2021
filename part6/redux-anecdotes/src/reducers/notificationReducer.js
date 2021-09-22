@@ -1,9 +1,26 @@
+let timeId = 0;
+
+const notificationReducer = (state = '', action) => {
+  switch (action.type) {
+    case 'SHOW':
+      return action.data.message;
+    case 'HIDE':
+      return '';
+    default:
+      return state;
+  }
+};
+
 export const showNotification = (message, time) => {
   return async dispatch => {
+    clearTimeout(timeId);
+    timeId = setTimeout(() => dispatch(hideNotification()), time * 1000);
+
     dispatch({
       type: 'SHOW',
-      data: message,
-      time: setTimeout(() => dispatch(hideNotification()), time * 1000),
+      data: {
+        message,
+      },
     });
   };
 };
@@ -11,16 +28,5 @@ export const showNotification = (message, time) => {
 export const hideNotification = () => ({
   type: 'HIDE',
 });
-
-const notificationReducer = (state = '', action) => {
-  switch (action.type) {
-    case 'SHOW':
-      return action.data;
-    case 'HIDE':
-      return '';
-    default:
-      return state;
-  }
-};
 
 export default notificationReducer;
