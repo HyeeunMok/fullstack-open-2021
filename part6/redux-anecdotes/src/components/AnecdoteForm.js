@@ -1,24 +1,22 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
 import { showNotification } from '../reducers/notificationReducer';
 
-const AnecdoteForm = () => {
-  const dispatch = useDispatch();
-
-  const AddAnecdote = async event => {
+const AnecdoteForm = ({ createAnecdote, showNotification }) => {
+  const addAnecdote = async event => {
     event.preventDefault();
     const content = event.target.anecdote.value;
     event.target.anecdote.value = '';
 
-    dispatch(createAnecdote(content));
-    dispatch(showNotification(`New anectode was added: ${content}`, 6));
+    createAnecdote(content);
+    showNotification(`New anectode was added: ${content}`, 6);
   };
 
   return (
     <>
       <h2>create new</h2>
-      <form onSubmit={AddAnecdote}>
+      <form onSubmit={addAnecdote}>
         <div>
           <input name="anecdote" />
         </div>
@@ -28,4 +26,9 @@ const AnecdoteForm = () => {
   );
 };
 
-export default AnecdoteForm;
+const ConnectedAnecdoteForm = connect(null, {
+  createAnecdote,
+  showNotification,
+})(AnecdoteForm);
+
+export default ConnectedAnecdoteForm;
