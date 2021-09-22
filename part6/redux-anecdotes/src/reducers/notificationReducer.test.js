@@ -18,12 +18,12 @@ describe('notificationReducer', () => {
     const state = initialState;
     const action = {
       type: 'SHOW',
-      data: 'Display notification message',
+      data: { message: 'Display notification message', time: 5 },
     };
 
     deepFreeze(state);
     const newState = notificationReducer(state, action);
-    expect(newState).toEqual(action.data);
+    expect(newState).toEqual(action.data.message);
   });
 
   test('notification message can be hidden', () => {
