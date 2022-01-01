@@ -11,6 +11,10 @@
     {
       "content": "React is great!",
       "id": 3
+    },
+    {
+      "content": "Next.js is great",
+      "id": 4
     }
   ],
   "persons": [
@@ -28,6 +32,11 @@
       "name": "Simpson",
       "number": "555-555-5555",
       "id": 3
+    },
+    {
+      "name": "John",
+      "number": "222-222-222",
+      "id": 4
     }
   ]
 }
