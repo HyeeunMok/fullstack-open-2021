@@ -20,11 +20,12 @@ blogsRouter.get('/:id', async (request, response) => {
 blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   const body = request.body;
   const user = request.user;
-
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
   if (!request.token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' });
   }
+
   // const user = await User.findById(decodedToken.id);
   // body.userId === undefined
   //   ? await User.findOne({})
@@ -42,10 +43,11 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
   user.blogs = user.blogs.concat(savedBlog.id);
   await user.save();
 
-  const populatedBlog = await savedBlog
-    .populate('user', { username: 1, name: 1 })
-    .execPopulate();
-  response.status(200).json(populatedBlog.toJSON());
+  response.json(savedBlog.toJSON());
+  // const populatedBlog = await savedBlog
+  //   .populate('user', { username: 1, name: 1 })
+  //   .execPopulate();
+  // response.status(200).json(populatedBlog.toJSON());
 });
 
 // Delete a blog based on id
@@ -75,23 +77,33 @@ blogsRouter.delete(
 
 // Update a blog based on id
 blogsRouter.put('/:id', async (request, response) => {
-  const body = request.body;
+  const id = request.params.id;
 
   const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
+    likes: request.body.likes,
   };
-
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
-    new: true,
-    runValidators: true,
-    context: 'query',
-  });
-  updatedBlog
-    ? response.status(200).json(updatedBlog.toJSON())
-    : response.status(404).end();
+  const updatedBlog = await Blog.findByIdAndUpdate(id, blog, { new: true });
+  response.json(updatedBlog);
 });
+
+// blogsRouter.put('/:id', async (request, response) => {
+//   const body = request.body;
+
+//   const blog = {
+//     title: body.title,
+//     author: body.author,
+//     url: body.url,
+//     likes: body.likes,
+//   };
+
+//   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+//     new: true,
+//     runValidators: true,
+//     context: 'query',
+//   });
+//   updatedBlog
+//     ? response.status(200).json(updatedBlog.toJSON())
+//     : response.status(404).end();
+// });
 
 module.exports = blogsRouter;
