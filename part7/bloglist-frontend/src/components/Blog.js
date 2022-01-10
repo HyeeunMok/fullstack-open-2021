@@ -1,20 +1,59 @@
 import React, { useState } from 'react';
+import { likeBlog, deleteBlog } from '../reducers/blogReducer';
+import {
+  setSuccessMessage,
+  setWarningMessage,
+} from '../reducers/notificationReducer';
+import { useDispatch } from 'react-redux';
 import styles from './Blog.module.css';
 
-const Blog = ({ blog, updateBlog, removeBlog }) => {
+const Blog = ({ blog }) => {
+  const dispatch = useDispatch();
   const [showDetails, setShowDetails] = useState(false);
+
   const toggleShow = () => {
     setShowDetails(!showDetails);
   };
 
+  const addLike = (id, likes) => {
+    try {
+      dispatch(likeBlog(id, likes + 1));
+      dispatch(
+        setSuccessMessage(
+          `One like added to blog ${blog.title} by ${blog.author}`
+        )
+      );
+    } catch (error) {
+      dispatch(setWarningMessage(error));
+    }
+  };
+
+  const removeBlog = () => {
+    const result = window.confirm(
+      `Do you want to delete ${blog.title} by ${blog.author}?`
+    );
+
+    if (result) {
+      try {
+        dispatch(
+          setSuccessMessage(`blog ${blog.title} by ${blog.author} was deleted.`)
+        );
+        console.log(blog.id);
+        dispatch(deleteBlog(blog.id));
+      } catch (error) {
+        dispatch(setWarningMessage(error));
+      }
+    }
+  };
+
   const likeHandler = () => {
-    const updatedBlog = { ...blog, likes: blog.likes + 1 };
-    updateBlog(blog.id, updatedBlog);
+    addLike(blog.id, blog.likes);
+    console.log(blog.id);
+    console.log(blog.likes);
   };
 
   const removeHandler = () => {
-    window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
-    removeBlog(blog.id);
+    removeBlog(blog);
   };
 
   return (

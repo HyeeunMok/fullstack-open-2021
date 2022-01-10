@@ -18,15 +18,22 @@ const create = async newObject => {
   return response.data;
 };
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject);
-  return request.then(response => response.data);
+const update = async blog => {
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const response = await axios.put(
+    `${baseUrl}/${blog.id}`,
+    { likes: blog.likes },
+    config
+  );
+  return response.data;
 };
 
-const remove = id => {
+const remove = async blog => {
   const config = { headers: { Authorization: token } };
-  const response = axios.delete(`${baseUrl}/${id}`, config);
-  return response;
+  await axios.delete(`${baseUrl}/${blog.id}`, config);
 };
 
 // eslint-disable-next-line
