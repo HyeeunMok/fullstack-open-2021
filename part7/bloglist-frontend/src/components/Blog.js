@@ -5,14 +5,19 @@ import {
   setWarningMessage,
 } from '../reducers/notificationReducer';
 import { useDispatch } from 'react-redux';
+import blogService from '../services/blogs';
 import styles from './Blog.module.css';
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch();
   const [showDetails, setShowDetails] = useState(false);
+  const [allowRemove, setAllowRemove] = useState(false);
 
   const toggleShow = () => {
     setShowDetails(!showDetails);
+    const user = blogService.getUserInfo();
+    const blogUser = blog.user.id || blog.user;
+    setAllowRemove(blogUser === user.id);
   };
 
   const addLike = (id, likes) => {
@@ -74,9 +79,15 @@ const Blog = ({ blog }) => {
             <br />
             {blog.user.name}
           </p>
-          <button data-cy="delete-button" onClick={removeHandler}>
-            Remove
-          </button>
+          {allowRemove && (
+            <button
+              data-cy="delete-button"
+              className="removeButton"
+              onClick={removeHandler}
+            >
+              Remove
+            </button>
+          )}
         </div>
       )}
     </div>

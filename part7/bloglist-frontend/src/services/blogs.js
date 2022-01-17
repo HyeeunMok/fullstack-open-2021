@@ -1,10 +1,24 @@
 import axios from 'axios';
+import decode from 'jwt-decode';
 const baseUrl = '/api/blogs';
 
 let token = null;
 
 const setToken = newToken => {
   token = `bearer ${newToken}`;
+};
+
+const getUserInfo = () => {
+  return token ? decode(token) : false;
+};
+
+const getAllUsers = () => {
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const request = axios.get('/api/users', config);
+  return request.then(response => response.data);
 };
 
 const getAll = () => {
@@ -37,4 +51,12 @@ const remove = async blog => {
 };
 
 // eslint-disable-next-line
-export default { setToken, getAll, create, update, remove };
+export default {
+  setToken,
+  getAll,
+  create,
+  update,
+  remove,
+  getUserInfo,
+  getAllUsers,
+};
