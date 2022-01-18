@@ -50,6 +50,11 @@ const remove = async blog => {
   await axios.delete(`${baseUrl}/${blog.id}`, config);
 };
 
+const newComment = async (id, comment) => {
+  const request = await axios.post(`${baseUrl}/${id}/comments`, { comment });
+  return request.data;
+};
+
 // eslint-disable-next-line
 export default {
   setToken,
@@ -59,4 +64,5 @@ export default {
   remove,
   getUserInfo,
   getAllUsers,
+  newComment,
 };

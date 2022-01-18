@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { likeBlog, deleteBlog } from '../reducers/blogReducer';
+import { likeBlog, deleteBlog, addComment } from '../reducers/blogReducer';
 import {
   setSuccessMessage,
   setWarningMessage,
@@ -62,6 +62,12 @@ const Blog = ({ blog }) => {
     removeBlog(blog);
   };
 
+  const createComment = event => {
+    event.preventDefault();
+    dispatch(addComment(blog.id, event.target.comment.value));
+    event.target.comment.value = '';
+  };
+
   return (
     <div className={styles.blogStyle}>
       <h1>Blog app</h1>
@@ -85,6 +91,18 @@ const Blog = ({ blog }) => {
             Remove
           </button>
         )}
+      </div>
+      <div>
+        <h3>Comments</h3>
+        <form onSubmit={createComment}>
+          <input type="text" name="comment" />
+          <button type="submit">Add comment</button>
+        </form>
+        <ul>
+          {blog.comments.map(comment => (
+            <li key={comment.id}>{comment}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
