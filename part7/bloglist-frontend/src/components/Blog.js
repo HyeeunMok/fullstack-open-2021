@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { likeBlog, deleteBlog } from '../reducers/blogReducer';
 import {
   setSuccessMessage,
@@ -10,15 +11,14 @@ import styles from './Blog.module.css';
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch();
-  const [showDetails, setShowDetails] = useState(false);
+  const navigate = useNavigate();
   const [allowRemove, setAllowRemove] = useState(false);
 
-  const toggleShow = () => {
-    setShowDetails(!showDetails);
+  useEffect(() => {
     const user = blogService.getUserInfo();
     const blogUser = blog.user.id || blog.user;
     setAllowRemove(blogUser === user.id);
-  };
+  }, [blog.user]);
 
   const addLike = (id, likes) => {
     try {
@@ -45,6 +45,7 @@ const Blog = ({ blog }) => {
         );
         console.log(blog.id);
         dispatch(deleteBlog(blog.id));
+        navigate('/');
       } catch (error) {
         dispatch(setWarningMessage(error));
       }
@@ -63,33 +64,28 @@ const Blog = ({ blog }) => {
 
   return (
     <div className={styles.blogStyle}>
-      {blog.title} by {blog.author}
-      <button data-cy="view-button" onClick={toggleShow}>
-        {showDetails ? 'Hide' : 'View'}
-      </button>
-      {showDetails && (
-        <div className="blogDetails">
-          <p>
-            {blog.url}
-            <br />
-            <span data-cy="likes">likes: {blog.likes}</span>
-            <button data-cy="like-button" onClick={likeHandler}>
-              Like
-            </button>
-            <br />
-            {blog.user.name}
-          </p>
-          {allowRemove && (
-            <button
-              data-cy="delete-button"
-              className="removeButton"
-              onClick={removeHandler}
-            >
-              Remove
-            </button>
-          )}
-        </div>
-      )}
+      <h1>Blog app</h1>
+      <h1>{blog.title}</h1>
+      <div className="blogDetails">
+        <a href={blog.url}>{blog.url}</a>
+        <p>
+          <span data-cy="likes">likes: {blog.likes}</span>
+          <button data-cy="like-button" onClick={likeHandler}>
+            Like
+          </button>
+          <br />
+          added by {blog.author}
+        </p>
+        {allowRemove && (
+          <button
+            data-cy="delete-button"
+            className="removeButton"
+            onClick={removeHandler}
+          >
+            Remove
+          </button>
+        )}
+      </div>
     </div>
   );
 };
