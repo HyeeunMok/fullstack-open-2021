@@ -7,7 +7,7 @@ import styles from './Navigation.module.css';
 const Navigation = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(userLogout());

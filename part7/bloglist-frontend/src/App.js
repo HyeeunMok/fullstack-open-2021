@@ -79,27 +79,33 @@ const App = () => {
         <Route path="/users">
           <Route path="/users" element={<Users blogs={userBlogs} />} />
         </Route>
-        {user === null ? (
-          <Route path="/" element={<LoginForm />}></Route>
-        ) : (
-          <Route
-            path="/"
-            element={
-              <Fragment>
-                <h2>Blogs</h2>
-                {blogForm()}
-                {blogs
-                  .sort((min, max) => max.likes - min.likes) // Descending order
-                  .map(blog => (
-                    <div key={blog.id} blog={blog} className={styles.blogStyle}>
-                      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-                    </div>
-                  ))}
-                <Users />
-              </Fragment>
-            }
-          ></Route>
-        )}
+        <Route path="/">
+          {user === null ? (
+            <Route path="/" element={<LoginForm />}></Route>
+          ) : (
+            <Route
+              path="/"
+              element={
+                <Fragment>
+                  <h2>Blogs</h2>
+                  {blogForm()}
+                  {blogs
+                    .sort((min, max) => max.likes - min.likes) // Descending order
+                    .map(blog => (
+                      <div
+                        key={blog.id}
+                        blog={blog}
+                        className={styles.blogStyle}
+                      >
+                        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                      </div>
+                    ))}
+                  <Users />
+                </Fragment>
+              }
+            ></Route>
+          )}
+        </Route>
       </Routes>
     </div>
   );
