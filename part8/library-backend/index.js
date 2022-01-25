@@ -1,18 +1,16 @@
 const { ApolloServer, gql } = require('apollo-server');
+const { typeDefs } = require('./schema');
+const { Query } = require('./resolvers/Query');
 const { db } = require('./db');
-
-const typeDefs = gql`
-  type Query {
-  }
-`;
-
-const resolvers = {
-  Query: {},
-};
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers: {
+    Query,
+  },
+  context: {
+    db,
+  },
 });
 
 server.listen().then(({ url }) => {
