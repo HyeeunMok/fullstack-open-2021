@@ -4,7 +4,7 @@ exports.typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks: [Book!]!
+    allBooks(filter: BooksFilterInput): [Book!]!
     allAuthors: [Author!]!
   }
 
@@ -20,5 +20,9 @@ exports.typeDefs = gql`
     id: ID!
     born: Int!
     bookCount: Int
+  }
+
+  input BooksFilterInput {
+    author: String
   }
 `;
