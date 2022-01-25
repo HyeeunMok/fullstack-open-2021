@@ -5,6 +5,7 @@ exports.typeDefs = gql`
     bookCount: Int!
     authorCount: Int!
     allBooks: [Book!]!
+    allAuthors: [Author!]!
   }
 
   type Book {
@@ -12,5 +13,12 @@ exports.typeDefs = gql`
     published: Int!
     author: String!
     genres: [String]
+  }
+
+  type Author {
+    name: String!
+    id: ID!
+    born: Int!
+    bookCount: Int
   }
 `;
