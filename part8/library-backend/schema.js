@@ -24,5 +24,6 @@ exports.typeDefs = gql`
 
   input BooksFilterInput {
     author: String
+    genre: String
   }
 `;
