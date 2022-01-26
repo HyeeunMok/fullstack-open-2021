@@ -11,6 +11,7 @@ exports.typeDefs = gql`
   type Mutation {
     addBook(input: AddBookInput!): Book!
     addAuthor(input: AddAuthorInput!): Author!
+    updateAuthor(name: String!, input: updateAuthorInput!): Author
   }
 
   type Book {
@@ -42,6 +43,12 @@ exports.typeDefs = gql`
 
   input AddAuthorInput {
     name: String!
+    born: Int
+    bookCount: Int
+  }
+
+  input updateAuthorInput {
+    name: String
     born: Int
     bookCount: Int
   }

@@ -37,4 +37,14 @@ exports.Mutation = {
     db.books.push(newBook);
     return newBook;
   },
+
+  updateAuthor: (parent, { name, input }, { db }) => {
+    const index = db.authors.findIndex(author => author.name === name);
+    if (index === -1) return null;
+    db.authors[index] = {
+      ...db.authors[index],
+      ...input,
+    };
+    return db.authors[index];
+  },
 };
