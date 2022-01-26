@@ -8,8 +8,14 @@ exports.typeDefs = gql`
     allAuthors: [Author!]!
   }
 
+  type Mutation {
+    addBook(input: AddBookInput!): Book!
+    addAuthor(input: AddAuthorInput!): Author!
+  }
+
   type Book {
     title: String!
+    id: ID!
     published: Int!
     author: String!
     genres: [String]
@@ -18,12 +24,25 @@ exports.typeDefs = gql`
   type Author {
     name: String!
     id: ID!
-    born: Int!
+    born: Int
     bookCount: Int
   }
 
   input BooksFilterInput {
     author: String
     genre: String
+  }
+
+  input AddBookInput {
+    title: String!
+    published: Int!
+    author: String!
+    genres: [String]
+  }
+
+  input AddAuthorInput {
+    name: String!
+    born: Int
+    bookCount: Int
   }
 `;

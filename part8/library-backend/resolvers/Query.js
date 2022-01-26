@@ -7,15 +7,15 @@ exports.Query = {
     let filteredBooks = db.books;
     if (filter) {
       const { author, genre } = filter;
-      if (author !== undefined && genre !== undefined) {
+      if (author && genre) {
         filteredBooks = filteredBooks
           .filter(book => book.author === author)
           .filter(book => book.genres.includes(genre));
       }
-      if (author !== undefined) {
+      if (author) {
         filteredBooks = filteredBooks.filter(book => book.author === author);
       }
-      if (genre !== undefined) {
+      if (genre) {
         filteredBooks = filteredBooks.filter(book =>
           book.genres.includes(genre)
         );
