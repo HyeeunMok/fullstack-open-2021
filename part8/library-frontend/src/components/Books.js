@@ -1,38 +1,37 @@
-import React from 'react'
+import React from 'react';
+import { useBooks } from '../hooks/useBooks';
 
-const Books = (props) => {
+const Books = props => {
+  const { error, data, loading } = useBooks();
+
   if (!props.show) {
-    return null
+    return null;
   }
 
-  const books = []
+  if (loading) return <div>Spinner...</div>;
+  if (error) return <div>Something went wrong.</div>;
 
   return (
     <div>
-      <h2>books</h2>
-
+      <h2>List of Books</h2>
       <table>
         <tbody>
           <tr>
-            <th></th>
-            <th>
-              author
-            </th>
-            <th>
-              published
-            </th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Published</th>
           </tr>
-          {books.map(a =>
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author}</td>
-              <td>{a.published}</td>
+          {data.allBooks.map(book => (
+            <tr key={book.title}>
+              <td>{book.title}</td>
+              <td>{book.author}</td>
+              <td>{book.published}</td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default Books
+export default Books;

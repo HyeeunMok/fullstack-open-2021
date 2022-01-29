@@ -3,7 +3,6 @@ import { useAuthors } from '../hooks/useAuthors';
 
 const Authors = props => {
   const { error, loading, data } = useAuthors();
-  console.log(data);
 
   if (!props.show) {
     return null;
@@ -14,7 +13,7 @@ const Authors = props => {
 
   return (
     <div>
-      <h2>Authors List</h2>
+      <h2>List of Authors</h2>
       <table>
         <tbody>
           <tr>
