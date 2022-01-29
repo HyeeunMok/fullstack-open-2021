@@ -1,38 +1,38 @@
-  
-import React from 'react'
+import React from 'react';
+import { useAuthors } from '../hooks/useAuthors';
 
-const Authors = (props) => {
+const Authors = props => {
+  const { error, loading, data } = useAuthors();
+  console.log(data);
+
   if (!props.show) {
-    return null
+    return null;
   }
-  const authors = []
+
+  if (loading) return <div>Spinner...</div>;
+  if (error) return <div>Something went wrong.</div>;
 
   return (
     <div>
-      <h2>authors</h2>
+      <h2>Authors List</h2>
       <table>
         <tbody>
           <tr>
-            <th></th>
-            <th>
-              born
-            </th>
-            <th>
-              books
-            </th>
+            <th>Name</th>
+            <th>Born</th>
+            <th>Books</th>
           </tr>
-          {authors.map(a =>
-            <tr key={a.name}>
-              <td>{a.name}</td>
-              <td>{a.born}</td>
-              <td>{a.bookCount}</td>
+          {data.allAuthors.map(author => (
+            <tr key={author.name}>
+              <td>{author.name}</td>
+              <td>{author.born}</td>
+              <td>{author.bookCount}</td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
-
     </div>
-  )
-}
+  );
+};
 
-export default Authors
+export default Authors;
