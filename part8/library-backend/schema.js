@@ -50,6 +50,5 @@ exports.typeDefs = gql`
   input updateAuthorInput {
     name: String
     born: Int
-    bookCount: Int
   }
 `;
