@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { useAuthors } from '../hooks/useAuthors';
-import { UPDATE_AUTHOR } from '../queries';
+import { GET_AUTHORS, UPDATE_AUTHOR } from '../queries';
 
 const Authors = props => {
   const { error, loading, data } = useAuthors();
   const [name, setName] = useState('');
   const [born, setBorn] = useState('');
+  const [updateAuthor] = useMutation(UPDATE_AUTHOR, {
+    refetchQueries: [{ query: GET_AUTHORS }],
+  });
 
   const submit = async event => {
     event.preventDefault();
-    UPDATE_AUTHOR({ variables: { name, input: { name, born } } });
+    updateAuthor({ variables: { name, input: { name, born } } });
     console.log(name, born);
 
     setName('');
