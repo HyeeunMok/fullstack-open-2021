@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
+import Select from 'react-select';
 import { useAuthors } from '../hooks/useAuthors';
 import { GET_AUTHORS, UPDATE_AUTHOR } from '../queries';
 
@@ -14,7 +15,6 @@ const Authors = props => {
   const submit = async event => {
     event.preventDefault();
     updateAuthor({ variables: { name, input: { name, born } } });
-    console.log(name, born);
 
     setName('');
     setBorn('');
@@ -48,13 +48,21 @@ const Authors = props => {
       </table>
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
-        <div>
+        <Select
+          defaultValue={name}
+          onChange={({ value }) => setName(value)}
+          options={data.allAuthors.map(author => ({
+            value: author.name,
+            label: author.name,
+          }))}
+        />
+        {/* <div>
           Name:{' '}
           <input
             value={name}
             onChange={({ target }) => setName(target.value)}
           />
-        </div>
+        </div> */}
         <div>
           Born:
           <input
