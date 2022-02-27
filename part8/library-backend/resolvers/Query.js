@@ -4,13 +4,13 @@ const Book = require('../models/Book');
 exports.Query = {
   // bookCount: (parent, args, { db }) => db.books.length,
 
-  bookCount: () => Book.collection.countDocuments(),
+  bookCount: async () => Book.collection.countDocuments(),
 
   // authorCount: (parent, args, { db }) => db.authors.length,
 
-  authorCount: () => Author.collection.countDocuments(),
+  authorCount: async () => Author.collection.countDocuments(),
 
-  allBooks: (parent, { filter }) => {
+  allBooks: async (parent, { filter }) => {
     return Book.find({});
   },
 
@@ -35,7 +35,7 @@ exports.Query = {
   //   return filteredBooks;
   // },
 
-  allAuthors: (parent, args) => {
+  allAuthors: async (parent, args) => {
     return Author.find({});
   },
 };
