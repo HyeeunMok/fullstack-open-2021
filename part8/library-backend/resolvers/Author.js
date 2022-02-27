@@ -1,5 +1,5 @@
 exports.Author = {
   bookCount: (parent, args, { db }) => {
-    return db.books.filter(book => book.author === parent.name).length;
+    return Book.count({ author: args.author });
   },
 };

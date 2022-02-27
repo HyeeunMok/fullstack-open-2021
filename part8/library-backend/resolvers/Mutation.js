@@ -1,7 +1,17 @@
 const { v4: uuid } = require('uuid');
 
 exports.Mutation = {
-  addAuthor: (parent, { input }, { db }) => {
+  // addAuthor: (parent, { input }, { db }) => {
+  //   const { name } = input;
+  //   const newAuthor = {
+  //     id: uuid(),
+  //     name,
+  //   };
+
+  //   db.authors.push(newAuthor);
+  //   return newAuthor;
+  // },
+  addAuthor: (parent, { input }) => {
     const { name } = input;
     const newAuthor = {
       id: uuid(),
@@ -9,7 +19,7 @@ exports.Mutation = {
     };
 
     db.authors.push(newAuthor);
-    return newAuthor;
+    return authors.save();
   },
 
   addBook: (parent, { input }, { db }) => {

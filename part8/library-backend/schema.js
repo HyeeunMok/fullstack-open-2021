@@ -17,9 +17,9 @@ exports.typeDefs = gql`
   type Book {
     title: String!
     id: ID!
-    published: String!
-    author: String!
-    genres: [String]
+    published: Int!
+    author: Author!
+    genres: [String!]!
   }
 
   type Author {
@@ -36,7 +36,7 @@ exports.typeDefs = gql`
 
   input AddBookInput {
     title: String!
-    published: String!
+    published: Int!
     author: String!
     genres: [String]
   }
