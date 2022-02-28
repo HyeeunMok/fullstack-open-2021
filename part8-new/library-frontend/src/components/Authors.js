@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import Select from 'react-select';
 import { ALL_AUTHORS, UPDATE_AUTHOR_BORN } from '../queries';
 
 const Authors = props => {
@@ -7,12 +8,18 @@ const Authors = props => {
   const [born, setBorn] = useState('');
   const authors = useQuery(ALL_AUTHORS);
 
-  const [editAuthor] = useMutation(UPDATE_AUTHOR_BORN, {
+  const [editAuthor, update_result] = useMutation(UPDATE_AUTHOR_BORN, {
     refetchQueries: [{ query: ALL_AUTHORS }],
     onError: error => {
       props.setError(error.message);
     },
   });
+
+  useEffect(() => {
+    if (update_result.data && update_result.data.editAuthor === null) {
+      props.setError('Author is not found');
+    }
+  }, [update_result.data]); // eslint-disable-line
 
   if (!props.show) {
     return null;
@@ -50,11 +57,18 @@ const Authors = props => {
       <br />
       <h2>Set birthyear</h2>
       <form onSubmit={submit}>
-        name
-        <input value={name} onChange={({ target }) => setName(target.value)} />
+        <Select
+          defaultValue={name}
+          onChange={({ value }) => setName(value)}
+          options={authors.data.allAuthors.map(a => ({
+            value: a.name,
+            label: a.name,
+          }))}
+        />
         <br />
         born
         <input value={born} onChange={({ target }) => setBorn(target.value)} />
+        <br />
         <br />
         <button type="submit">Update author</button>
       </form>
