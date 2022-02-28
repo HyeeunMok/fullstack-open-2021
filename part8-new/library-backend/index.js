@@ -155,8 +155,13 @@ const resolvers = {
       return newBook;
     },
     editAuthor: (root, args) => {
-      const author = authors.find(author => author.name === args.name);
-      return author ? { ...author, born: args.born } : null;
+      const index = authors.findIndex(author => author.name === args.name);
+      if (index === -1) return null;
+      authors[index] = {
+        ...authors[index],
+        ...args,
+      };
+      return authors[index];
     },
   },
 };
