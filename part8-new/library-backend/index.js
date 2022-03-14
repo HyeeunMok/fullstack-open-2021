@@ -4,6 +4,8 @@ const config = require('./utils/config');
 const Author = require('./models/author');
 const Book = require('./models/book');
 const User = require('./models/user');
+const jwt = require('jsonwebtoken');
+
 const { argsToArgsConfig } = require('graphql/type/definition');
 
 mongoose
